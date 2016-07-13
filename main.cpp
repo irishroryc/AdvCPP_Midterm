@@ -19,10 +19,17 @@ using namespace std;
  *
  */
 
+#define DEBUG 1
 static float PI=3.14159;
 
 namespace COLORS{
     enum Color{R,O,Y,G,B,I,V};
+}
+
+void debugOut(string S){
+    if(DEBUG){
+        cout << "DEBUG: " << S << endl;
+    }
 }
 
 class Shape{
@@ -104,6 +111,7 @@ int main(int argc, char** argv) {
 
     cout << "testCircleTwo color = " << testCircleTwo.getColorText() << endl;
     cout << "testCircleTwo area = " << testCircleTwo.getArea() << endl;
+    cout << "testCircleTwo radius = " << testCircleTwo.getRadius() << endl;
 
     return 0;
 }
@@ -111,7 +119,7 @@ int main(int argc, char** argv) {
 // Function definitions for class Shape
 Shape::Shape(int x, int y, COLORS::Color color, string type)
         :X(x),Y(y),shapeColor(color),shapeType(type){
-    cout << "Shape constructor called.\n";
+    debugOut("Shape constructor called.");
     Shape::count++;
     //Area=CalcArea();
     cout << "There are now " << Shape::count << " shapes.\n";
@@ -119,7 +127,7 @@ Shape::Shape(int x, int y, COLORS::Color color, string type)
 
 Shape::Shape(const Shape& S)
         :X(S.X),Y(S.Y),shapeColor(S.shapeColor),shapeType(S.shapeType),Area(S.Area){
-    cout << "Shape copy constructor called.\n";
+    debugOut("Shape copy constructor called.");
     Shape::count++;
     cout << "There are now " << Shape::count << " shapes.\n";
 }
@@ -136,7 +144,7 @@ Shape& Shape::operator=(const Shape& rhs){
 }
 
 Shape::~Shape(){
-    cout << "Shape destructor called.\n";
+    debugOut("Shape destructor called.");
     Shape::count--;
     cout << "There are now " << Shape::count << " shapes.\n";
 }
@@ -217,18 +225,19 @@ string Shape::getType()const{
 // Function definitions for class Circle
 
 Circle::Circle():Shape(0,0,COLORS::B,"Circle"),Radius(0){
-    cout << "Circle default constructor called.\n";
+    debugOut("Circle default constructor called.");
     setArea(0);
 }
 
 Circle::Circle(int x, int y, COLORS::Color color, int radius)
         :Shape(x, y, color, "Circle"), Radius(radius){
-    cout << "Circle parameterized constructor called.\n";
+    debugOut("Circle parameterized constructor called.");
     setArea(CalcArea());
 }
 
-Circle::Circle(const Circle& C):Shape(C.getX(), C.getY(), C.getColor(), "Circle"),Radius(C.Radius){
-    cout << "Circle copy constructor called.\n";
+Circle::Circle(const Circle& C)
+    :Shape(C.getX(),C.getY(),C.getColor(),"Circle"),Radius(C.Radius){
+    debugOut("Circle copy constructor called.");
     setArea(C.getArea());
 }
 
@@ -244,7 +253,7 @@ Circle& Circle::operator=(const Circle& rhs){
 }
 
 Circle::~Circle(){
-    cout << "Circle destructor called.\n";
+    debugOut("Circle destructor called.");
 }
 
 float Circle::CalcArea(){
